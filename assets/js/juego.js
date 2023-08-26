@@ -30,7 +30,7 @@ crearDeck();
 //Esta función me permite tomar un carta
 const pedirCarta = () => {
   if (deck.length === 0) {
-    throw "Nohay cartas en el deck";
+    throw "No hay cartas en el deck";
   }
 
   const carta = deck.shift();
@@ -38,5 +38,17 @@ const pedirCarta = () => {
   return carta;
 };
 
-//pedirCarta();
-const valorCarta = () => {};
+//Esta función me permite retonar el valor de una carta
+const valorCarta = (carta) => {
+  const valor = carta.substring(0, carta.length - 1);
+  let puntos = 0;
+
+  /** Si el valor no es un número, entonces verifica si es una A y devuelve 11, si no devuelve 10,
+   * en caso contrario devolvería el valor convertido a número
+   */
+  puntos = isNaN(valor) ? (valor === "A" ? 11 : 10) : Number(valor);
+
+  return puntos;
+};
+
+console.log(valorCarta("AD"));
