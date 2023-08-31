@@ -12,9 +12,11 @@ let puntosJugador = 0;
 puntosComputadora = 0;
 // Referencias del Html
 const btnPedir = document.querySelector("#btnPedir");
+
 const totalJugador = document.querySelector("#totalJugador");
 const totalComputadora = document.querySelector("#totalComputadora");
 const jugadorCartas = document.querySelector("#jugador-cartas");
+const computadoraCartas = document.querySelector("#computadora-cartas");
 
 //Esta función crea un nuevo deck o nueva baraja
 const crearDeck = () => {
@@ -52,6 +54,26 @@ const valorCarta = (carta) => {
   return isNaN(valor) ? (valor === "A" ? 11 : 10) : Number(valor);
 };
 
+// Turno de la computadora
+const turnoComputadora = (puntosMinimos) => {
+  do {
+    const carta = pedirCarta();
+
+    puntosComputadora = puntosComputadora + valorCarta(carta);
+    totalComputadora.innerText = puntosComputadora;
+
+    //   <img class="carta" src="assets/cartas/2C.png"/>
+    const img = document.createElement("img");
+    img.src = "assets/cartas/" + carta + ".png";
+    img.className = "carta";
+    computadoraCartas.appendChild(img);
+
+    if (puntosMinimos > 21) {
+      break;
+    }
+  } while (puntosComputadora < puntosMinimos && puntosMinimos <= 21);
+};
+
 // Eventos
 btnPedir.addEventListener("click", () => {
   const carta = pedirCarta();
@@ -59,9 +81,21 @@ btnPedir.addEventListener("click", () => {
   puntosJugador = puntosJugador + valorCarta(carta);
   totalJugador.innerText = puntosJugador;
 
+  //   <img class="carta" src="assets/cartas/2C.png"/>
   const img = document.createElement("img");
   img.src = "assets/cartas/" + carta + ".png";
   img.className = "carta";
-
   jugadorCartas.appendChild(img);
+
+  if (puntosJugador > 21) {
+    console.warn("¡Perdiste!");
+    btnPedir.disabled = true;
+    turnoComputadora(puntosJugador);
+  } else if (puntosJugador === 21) {
+    console.warn("¡Ganaste!");
+    btnPedir.disabled = true;
+    turnoComputadora(puntosJugador);
+  }
 });
+
+// TODO: Borrar
