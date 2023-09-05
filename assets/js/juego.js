@@ -8,10 +8,12 @@
 let deck = [];
 const tipos = ["C", "D", "H", "S"];
 const especiales = ["A", "J", "Q", "K"];
-let puntosJugador = 0;
-puntosComputadora = 0;
+let puntosJugador = 0,
+  puntosComputadora = 0;
 // Referencias del Html
 const btnPedir = document.querySelector("#btnPedir");
+const btnDetener = document.querySelector("#btnDetener");
+const btnNuevo = document.querySelector("#btnNuevo");
 
 const totalJugador = document.querySelector("#totalJugador");
 const totalComputadora = document.querySelector("#totalComputadora");
@@ -74,7 +76,7 @@ const turnoComputadora = (puntosMinimos) => {
   } while (puntosComputadora < puntosMinimos && puntosMinimos <= 21);
 };
 
-// Eventos
+// Evento pedir
 btnPedir.addEventListener("click", () => {
   const carta = pedirCarta();
 
@@ -95,6 +97,21 @@ btnPedir.addEventListener("click", () => {
     console.warn("¡Ganaste!");
     btnPedir.disabled = true;
     turnoComputadora(puntosJugador);
+  }
+});
+
+// Evento detener
+btnDetener.addEventListener("click", () => {
+  turnoComputadora(puntosJugador);
+  btnPedir.disabled = true;
+  btnNuevo.disabled = true;
+
+  if (puntosComputadora > 21) {
+    console.warn("¡Ganaste!");
+  } else if (puntosJugador < puntosComputadora) {
+    console.warn("¡Perdiste!");
+  } else if (puntosJugador > puntosComputadora) {
+    console.warn("¡Ganaste!");
   }
 });
 
